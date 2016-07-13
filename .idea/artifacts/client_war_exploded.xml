@@ -1,0 +1,20 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="client:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/client_war_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="client/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="client" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Gradle: org.springframework:spring-core:4.3.0.RELEASE" />
+          <element id="library" level="project" name="Gradle: org.springframework.ws:spring-ws-core:2.3.0.RELEASE" />
+          <element id="library" level="project" name="Gradle: org.springframework:spring-webmvc:4.3.0.RELEASE" />
+          <element id="library" level="project" name="Gradle: org.springframework.integration:spring-integration-core:4.3.0.RELEASE" />
+          <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-core:4.1.0.RELEASE" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>
