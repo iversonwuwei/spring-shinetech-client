@@ -1,9 +1,11 @@
 package com.walden.controller;
 
 import com.walden.action.IQuery;
+import com.walden.action.implement.query.UtilQuery;
 import com.walden.service.IService;
 import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
 import javax.ws.rs.GET;
@@ -21,6 +23,7 @@ public class UtilQueryController {
     @Autowired
     private IService utilService;
 
+    @Qualifier(value = "utilQuery")
     @Autowired
     private IQuery utilQuery;
 

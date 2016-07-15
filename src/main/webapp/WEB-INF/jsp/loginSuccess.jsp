@@ -14,5 +14,8 @@
 <center>
     系统登录成功<br><br><br>${user.user.user_name}，欢迎光临！
 </center>
+<div>
+    <a href="/user/login">Log Out!</a>
+</div>
 </body>
 </html>

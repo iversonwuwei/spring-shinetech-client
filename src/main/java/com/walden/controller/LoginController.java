@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.ws.soap.addressing.server.annotation.Action;
 
 import java.util.*;
 
@@ -25,6 +26,7 @@ public class LoginController {
     private Iterator<UserEntity> iterator;
     private UserEntity userEntity;
     private Map<String, Object> model;
+    private boolean islogined = false;
 
     @Autowired
     private IService userService;
@@ -45,7 +47,7 @@ public class LoginController {
         return "login";
     }
 
-    @RequestMapping("/registry")
+    @RequestMapping(value = "/registry", method = RequestMethod.GET)
     public ModelAndView registry(UserEntity userEntity){
         model = new HashMap<String, Object>();
         this.userEntity = userEntity;
@@ -53,11 +55,21 @@ public class LoginController {
             if (user.getUser_name().equals(userEntity.getUser_name())
                     && user.getUser_password().equals(userEntity.getUser_password())){
                 model.put("user", userEntity);
-                return new ModelAndView("loginSuccess", "user", model);
+                //return new ModelAndView("orderShow", "user", model);
+                return new ModelAndView("forward:/query/orderbyowner?owner="+userEntity.getUser_name());
             }
+            islogined = true;
             break;
         }
         model.put("error","please try again!");
         return new ModelAndView("login", "error", model);
+    }
+
+    @RequestMapping("/logout")
+    public String logout(){
+        userEntity = null;
+        userList = null;
+        islogined = false;
+        return "login";
     }
 }
