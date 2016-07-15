@@ -120,7 +120,6 @@
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.8.0.rc1" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.8.0.rc2" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.retry:spring-retry:1.1.2.RELEASE" level="project" />
-    <orderEntry type="library" name="server-api" level="project" />
   </component>
   <component name="TestModuleProperties" production-module="shinetech-mybatis_main" />
 </module>

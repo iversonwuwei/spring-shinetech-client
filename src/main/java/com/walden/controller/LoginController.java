@@ -1,7 +1,9 @@
 package com.walden.controller;
 
 import com.walden.action.IQuery;
+import com.walden.configure.UserRequestParams;
 import com.walden.entity.UserEntity;
+import com.walden.enumeration.ActionEnum;
 import com.walden.service.IService;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -11,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.ws.soap.addressing.server.annotation.Action;
 
 import java.util.*;
 
@@ -22,11 +23,10 @@ import java.util.*;
 @RequestMapping("/user")
 public class LoginController {
     private JSONArray jsonArray;
-    private List<UserEntity> userList;
-    private Iterator<UserEntity> iterator;
-    private UserEntity userEntity;
+    private UserEntity user;
     private Map<String, Object> model;
-    private boolean islogined = false;
+    private List<UserEntity> users;
+    private Iterator<JSONObject> iterator;
 
     @Autowired
     private IService userService;
@@ -35,41 +35,30 @@ public class LoginController {
     private IQuery query;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login(){
-        jsonArray = (JSONArray) userService.find(query);
-        userList = new ArrayList<UserEntity>();
-        iterator = jsonArray.iterator();
-        while(iterator.hasNext()){
-            JSONObject jsonObject = JSONObject.fromObject(iterator.next());
-            userList.add((UserEntity) JSONObject.toBean(jsonObject, UserEntity.class));
-        }
-        System.out.println(userList.size());
+    public String login() {
+
         return "login";
     }
 
     @RequestMapping(value = "/registry", method = RequestMethod.GET)
-    public ModelAndView registry(UserEntity userEntity){
+    public ModelAndView registry(UserEntity userEntity) {
+        users = new ArrayList<UserEntity>();
         model = new HashMap<String, Object>();
-        this.userEntity = userEntity;
-        for (UserEntity user : userList){
+        UserRequestParams requestParam = new UserRequestParams();
+        requestParam.setActionEnum(ActionEnum.userQuery);
+        requestParam.setUsername(userEntity.getUser_name());
+        JSONArray jsonArray = (JSONArray) userService.findBy(query, requestParam);
+        iterator = jsonArray.iterator();
+        while (iterator.hasNext()) {
+            JSONObject jsonObject = iterator.next();
+            user = (UserEntity) JSONObject.toBean(jsonObject, UserEntity.class);
             if (user.getUser_name().equals(userEntity.getUser_name())
-                    && user.getUser_password().equals(userEntity.getUser_password())){
+                    && userEntity.getUser_password().equals(userEntity.getUser_password())) {
                 model.put("user", userEntity);
-                //return new ModelAndView("orderShow", "user", model);
-                return new ModelAndView("forward:/query/orderbyowner?owner="+userEntity.getUser_name());
+                return new ModelAndView("forward:/query/orderbyowner?owner=" + userEntity.getUser_name());
             }
-            islogined = true;
-            break;
         }
-        model.put("error","please try again!");
+        model.put("error", "please try again!");
         return new ModelAndView("login", "error", model);
-    }
-
-    @RequestMapping("/logout")
-    public String logout(){
-        userEntity = null;
-        userList = null;
-        islogined = false;
-        return "login";
     }
 }
