@@ -53,7 +53,7 @@ public class LoginController {
             JSONObject jsonObject = iterator.next();
             user = (UserEntity) JSONObject.toBean(jsonObject, UserEntity.class);
             if (user.getUser_name().equals(userEntity.getUser_name())
-                    && userEntity.getUser_password().equals(userEntity.getUser_password())) {
+                    && user.getUser_password().equals(userEntity.getUser_password())) {
                 model.put("user", userEntity);
                 return new ModelAndView("forward:/query/orderbyowner?owner=" + userEntity.getUser_name());
             }
